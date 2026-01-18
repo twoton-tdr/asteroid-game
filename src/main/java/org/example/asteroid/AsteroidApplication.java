@@ -1,6 +1,7 @@
 package org.example.asteroid;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,31 +13,37 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Polygon;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.example.asteroid.model.Asteroid;
 import org.example.asteroid.model.Projectile;
 import org.example.asteroid.model.Ship;
-
+import javafx.scene.image.Image;
 
 public class AsteroidApplication extends Application {
     public static int WIDHT = 600;
     public static int HEIGHT = 400;
     @Override
     public void start(Stage stage) throws IOException {
+
+        Image icon = new Image(getClass().getResource("/org.example.asteroid/images.jpg").toExternalForm());
+        stage.getIcons().add(icon);
+
+
         AtomicInteger point = new AtomicInteger();
         AtomicInteger highestPoint = new AtomicInteger();
         highestPoint.set(file.readHighestPoint());
-
         Pane scrn = new Pane();
+        scrn.setPrefSize(WIDHT, HEIGHT);
+
+
         Label highPointLabel = new Label("Highest Point : "+highestPoint.get());
         highPointLabel.setTranslateY(20);
         Label label = new Label("Points scored : 0");
-        scrn.setPrefSize(WIDHT, HEIGHT);
+
         scrn.getChildren().add(label);
         scrn.getChildren().add(highPointLabel);
         Ship ship = new Ship(WIDHT / 2, HEIGHT / 2);
@@ -113,7 +120,7 @@ public class AsteroidApplication extends Application {
                 List<Projectile> projectilesToRemove = projectiles.stream().filter(projectile -> {
                     List<Asteroid> asteroidsToRemove = asteroids.stream().filter(asteroid -> {
                         if(asteroid.collide(projectile)){
-
+                            SoundEffect.playSound();
                             label.setText("Points scored: "+point.incrementAndGet());
                             return true;
                         }
@@ -144,10 +151,19 @@ public class AsteroidApplication extends Application {
 
                 asteroids.forEach(asteroid -> {
                     if (ship.collide(asteroid)) {
+
+                        //alert box
+                        Alert a = new Alert(Alert.AlertType.INFORMATION);
+                        a.setTitle("Game End!");
+                        a.setHeaderText(null);
+                        a.setContentText("Points Scored: "+point.get());
+
+                        a.show();
                         if(point.get() > highestPoint.get()){
                             file.writeHighestPoint(point.get());
                         }
                         stop();
+
                     }
                 });
             }
@@ -157,6 +173,9 @@ public class AsteroidApplication extends Application {
                 file.writeHighestPoint(point.get());
             }
         });
+
+
+
         stage.setScene(scene);
         stage.setTitle("Asteroids!");
         stage.show();
