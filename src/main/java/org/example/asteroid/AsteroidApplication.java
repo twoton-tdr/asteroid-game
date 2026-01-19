@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import org.example.asteroid.model.Asteroid;
 import org.example.asteroid.model.Particles;
@@ -32,12 +33,14 @@ public class AsteroidApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         Image icon = new Image(getClass().getResource("/org.example.asteroid/images.jpg").toExternalForm());
+        AudioClip sound = new AudioClip(getClass().getResource("/org.example.asteroid/asteroid-impact.mp3").toExternalForm());
         stage.getIcons().add(icon);
 
 
         AtomicInteger point = new AtomicInteger();
         AtomicInteger highestPoint = new AtomicInteger();
-        highestPoint.set(file.readHighestPoint());
+        file fileops = new file();
+        highestPoint.set(fileops.readHighestPoint());
         Pane scrn = new Pane();
         scrn.setPrefSize(WIDHT, HEIGHT);
 
@@ -122,7 +125,7 @@ public class AsteroidApplication extends Application {
                 List<Projectile> projectilesToRemove = projectiles.stream().filter(projectile -> {
                     List<Asteroid> asteroidsToRemove = asteroids.stream().filter(asteroid -> {
                         if(asteroid.collide(projectile)){
-                            SoundEffect.playSound();
+                            SoundEffect.playSound(sound);
 //                            adding particle effect
                             try {
                                 new Particles(scrn,asteroid.getCharecter());
@@ -169,7 +172,7 @@ public class AsteroidApplication extends Application {
                         alertStage.getIcons().add(icon);
                         a.show();
                         if(point.get() > highestPoint.get()){
-                            file.writeHighestPoint(point.get());
+                            fileops.writeHighestPoint(point.get());
                         }
                         stop();
 
@@ -179,7 +182,7 @@ public class AsteroidApplication extends Application {
         }.start();
         stage.setOnCloseRequest((event)->{
             if(point.get() > highestPoint.get()){
-                file.writeHighestPoint(point.get());
+                fileops.writeHighestPoint(point.get());
             }
         });
 
