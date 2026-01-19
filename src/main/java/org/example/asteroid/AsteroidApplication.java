@@ -15,10 +15,12 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.example.asteroid.model.Asteroid;
+import org.example.asteroid.model.Particles;
 import org.example.asteroid.model.Projectile;
 import org.example.asteroid.model.Ship;
 import javafx.scene.image.Image;
@@ -121,6 +123,12 @@ public class AsteroidApplication extends Application {
                     List<Asteroid> asteroidsToRemove = asteroids.stream().filter(asteroid -> {
                         if(asteroid.collide(projectile)){
                             SoundEffect.playSound();
+//                            adding particle effect
+                            try {
+                                new Particles(scrn,asteroid.getCharecter());
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
                             label.setText("Points scored: "+point.incrementAndGet());
                             return true;
                         }
@@ -157,7 +165,8 @@ public class AsteroidApplication extends Application {
                         a.setTitle("Game End!");
                         a.setHeaderText(null);
                         a.setContentText("Points Scored: "+point.get());
-
+                        Stage alertStage = (Stage) a.getDialogPane().getScene().getWindow();
+                        alertStage.getIcons().add(icon);
                         a.show();
                         if(point.get() > highestPoint.get()){
                             file.writeHighestPoint(point.get());

@@ -10,9 +10,15 @@ import javafx.scene.shape.Polygon;
  */
 public class AsteroidFactory {
 
-    public Polygon createPolygon() {
+    private double size;
+
+
+    public Polygon createPolygon(Boolean isParticle) {
         Random rnd = new Random();
         double size = 10 + rnd.nextInt(10);
+        if(isParticle){
+            size = 5;
+        }
 
         Polygon polygon = new Polygon();
 
