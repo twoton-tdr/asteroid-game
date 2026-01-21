@@ -22,12 +22,17 @@ public class file{
     public int readHighestPoint(){
         int point = 0;
         try {
+            if(Files.notExists(pointsFile.toPath())){
+                Files.createFile(pointsFile.toPath());
+            }
             String pointString = Files.readString(pointsFile.toPath());
             if(pointString.isEmpty()){
                 writeHighestPoint(0);
                 point = 0;
+            }else{
+                point = Integer.valueOf(pointString);
             }
-            point = Integer.valueOf(pointString);
+
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
