@@ -49,6 +49,8 @@ public class Ship extends Character {
                 -10,5,
                 0,2
         ), x, y);
+        super.getCharecter().setScaleX(0.8);
+        super.getCharecter().setScaleY(0.8);
 
     }
 

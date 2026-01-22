@@ -64,10 +64,18 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.asteroid/org.example.asteroid.AsteroidApplication</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
+                            <mainClass>org.example.asteroid.Launcher</mainClass>
+                            <launcher>Asteroids</launcher>
+                            <jlinkZipName>Asteroids</jlinkZipName>
+                            <jlinkImageName>Asteroids</jlinkImageName>
+                            <!-- jpackage -->
+                            <jpackage>
+                                <type>exe</type>
+                                <appVersion>1.0.0</appVersion>
+                                <vendor>Twotun</vendor>
+                                <winShortcut>true</winShortcut>
+                                <winDirChooser>true</winDirChooser>
+                            </jpackage>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
