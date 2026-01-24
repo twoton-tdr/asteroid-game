@@ -1,0 +1,1 @@
+jpackage --type exe --dest dist  --name "AsteroidsGame"  --runtime-image target/Asteroids  --module org.example.asteroid/org.example.asteroid.Launcher --win-shortcut --win-menu --icon src/main/resources/org.example.asteroid/favicon.ico

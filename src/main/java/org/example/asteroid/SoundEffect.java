@@ -5,6 +5,6 @@ import javafx.scene.media.AudioClip;
 public class SoundEffect {
     public static void playSound(AudioClip sound){
 
-        sound.play();
+        sound.play(0.3);
     }
 }
